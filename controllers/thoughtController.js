@@ -1,9 +1,9 @@
-const { Thought, User } = require('../models');
+const { Thought, User, Reaction } = require('../models');
+const { Types } = require('mongoose');
 
-module.exports = {
-  // Function to get all of the applications by invoking the find() method with no arguments.
-  // Then we return the results as JSON, and catch any errors. Errors are sent as JSON with a message and a 500 status code
-  async getThoughts(req, res) {
+const ThoughtController = {
+  // Define the ThoughtController object message and a 500 status code
+  async getAllThoughts(req, res) {
     try {
       const thoughts = await Thought.find();
       res.json(thoughts);
@@ -11,8 +11,8 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // Gets a single application using the findOneAndUpdate method. We pass in the ID of the application and then respond with it, or an error if not found
-  async getSingleThought(req, res) {
+  // Get thought by ID
+  async getThoughtByID(req, res) {
     try {
       const thought = await Thought.findOne({ _id: req.params.thoughtId });
 
@@ -25,8 +25,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // Creates a new application. Accepts a request body with the entire Application object.
-  // Because applications are associated with Users, we then update the User who created the app and add the ID of the application to the applications array
+  // Creates a Thought
   async createThought(req, res) {
     try {
       const thought = await Thought.create(req.body);
@@ -48,10 +47,10 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // Updates and application using the findOneAndUpdate method. Uses the ID, and the $set operator in mongodb to inject the request body. Enforces validation.
-  async updateThought(req, res) {
+  // Update thought by ID
+  async updateThoughtByID(req, res) {
     try {
-      const thought = await Thought.findOneAndUpdate(
+      const thought = await Thought.findByIDAndUpdate(
         { _id: req.params.thoughtId },
         { $set: req.body },
         { runValidators: true, new: true }
@@ -67,11 +66,10 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // Deletes an application from the database. Looks for an app by ID.
-  // Then if the app exists, we look for any users associated with the app based on he app ID and update the applications array for the User.
+  // Deletes a thought
   async deleteThought(req, res) {
     try {
-      const thought = await Thought.findOneAndRemove({ _id: req.params.thoughtId });
+      const thought = await Thought.findByIDAndDelete({ _id: req.params.thoughtId });
 
       if (!thought) {
         return res.status(404).json({ message: 'No thought with this id!' });
@@ -94,40 +92,36 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // Adds a tag to an application. This method is unique in that we add the entire body of the tag rather than the ID with the mongodb $addToSet operator.
-  async addTag(req, res) {
+
+  // create reaction
+  async createReaction(req, res) {
     try {
-      const application = await Application.findOneAndUpdate(
-        { _id: req.params.applicationId },
-        { $addToSet: { tags: req.body } },
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $addToSet: { reactions: req.body } },
         { runValidators: true, new: true }
       );
-
-      if (!application) {
-        return res.status(404).json({ message: 'No application with this id!' });
-      }
-
-      res.json(application);
-    } catch (err) {
+      thought ? res.json(thought) : res.status(404).json({ message: notFound });
+    } catch (e) {
       res.status(500).json(err);
     }
   },
-  // Remove application tag. This method finds the application based on ID. It then updates the tags array associated with the app in question by removing it's tagId from the tags array.
-  async removeTag(req, res) {
+
+  // Remove a reaction
+  async deleteReaction(req, res) {
     try {
-      const application = await Application.findOneAndUpdate(
-        { _id: req.params.applicationId },
-        { $pull: { tags: { tagId: req.params.tagId } } },
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $pull: { reactions: { reactionId: req.params.reactionId } } },
         { runValidators: true, new: true }
       );
 
-      if (!application) {
-        return res.status(404).json({ message: 'No application with this id!' });
-      }
-
-      res.json(application);
-    } catch (err) {
+      thought ? res.json(thought) : res.status(404).json({ message: notFound });
+    } catch (e) {
       res.status(500).json(err);
     }
   },
 };
+
+// Export ThoughtController
+module.exports = ThoughtController;

@@ -276,5 +276,18 @@ You are required to submit BOTH of the following for review:
 
 * The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
 
----
-© 2023 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
+Endpoints:
+GET /api/users - get all users
+GET /api/users/:userId - get a single user by ID
+POST /api/users - create a new user
+PUT /api/users/:userId - update a user by ID
+DELETE /api/users/:userId - delete a user by ID
+GET /api/thought - get all thought
+GET /api/thought/:thoughtId - get a single thought by ID
+POST /api/thought - create a new thought
+PUT /api/thought/:thoughtId - update a thought by ID
+DELETE /api/thought/:thoughtId - delete a thought by ID
+POST /api/thought/:thoughtId/reactions - add a reaction to a thought
+DELETE /api/thought/:thoughtId/reactions/:reactionId - remove a reaction from a thought
+POST /api/users/:userId/friends/:friendId - add a friend to a user's friend list
+DELETE /api/users/:userId/friends/:friendId - remove a friend from a user's friend list
