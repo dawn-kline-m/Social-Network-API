@@ -1,10 +1,10 @@
-const { User } = require('../models');
+const { User, Thought } = require('../models');
 
 const UserController = {
   // Get all users
   async getUsers(req, res) {
     try {
-      const users = await User.find();
+      const users = await User.find().populate("thoughts").populate("friends");
       res.json(users);
     } catch (err) {
       res.status(500).json(err);
@@ -14,7 +14,7 @@ const UserController = {
   async getSingleUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.userId })
-        .select('-__v');
+        .select('-__v').populate("thoughts").populate("friends");
 
       if (!user) {
         return res.status(404).json({ message: 'No user with that ID' });
@@ -35,9 +35,11 @@ const UserController = {
     }
   },
 
-  // update a usser by ID
+  // update a user by ID
   updateUserById(req, res) {
-    User.findOneAndUpdate(req.params.id, req.body, { new: true })
+    User.findOneAndUpdate(req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true })
       .then(userData => {
         if (!userData) {
           return res.status(404).json({ message: 'User not found' });
@@ -56,8 +58,8 @@ const UserController = {
         return res.status(404).json({ message: 'No user with that ID' });
       }
 
-      await Application.deleteMany({ _id: { $in: user.applications } });
-      res.json({ message: 'User and associated apps deleted!' })
+      await Thought.deleteMany({ _id: { $in: user.thoughts } });
+      res.json({ message: 'User and associated thoughts deleted!' })
     } catch (err) {
       res.status(500).json(err);
     }
@@ -67,7 +69,7 @@ const UserController = {
   addFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $addToSet: { friends: req.body.friendId || req.params.friendId } },
+      { $addToSet: { friends: req.params.friendId } },
       { new: true }
     )
       .then(userData => {

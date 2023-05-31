@@ -41,7 +41,7 @@ const ThoughtController = {
         })
       }
 
-      res.json('Created the application 🎉');
+      res.json({ thought, user });
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
@@ -51,7 +51,7 @@ const ThoughtController = {
   async updateThoughtByID(req, res) {
     try {
       const thought = await Thought.findByIDAndUpdate(
-        { _id: req.params.thoughtId },
+        req.params.thoughtId,
         { $set: req.body },
         { runValidators: true, new: true }
       );
@@ -69,14 +69,14 @@ const ThoughtController = {
   // Deletes a thought
   async deleteThought(req, res) {
     try {
-      const thought = await Thought.findByIDAndDelete({ _id: req.params.thoughtId });
+      const thought = await Thought.findByIDAndDelete(req.params.thoughtId);
 
       if (!thought) {
         return res.status(404).json({ message: 'No thought with this id!' });
       }
 
       const user = await User.findOneAndUpdate(
-        { thoughts: req.params.thoughtId },
+        { _id: req.body.userId },
         { $pull: { thoughts: req.params.thoughtId } },
         { new: true }
       );
@@ -101,8 +101,8 @@ const ThoughtController = {
         { $addToSet: { reactions: req.body } },
         { runValidators: true, new: true }
       );
-      thought ? res.json(thought) : res.status(404).json({ message: notFound });
-    } catch (e) {
+      thought ? res.json(thought) : res.status(404).json({ message: "notFound" });
+    } catch (err) {
       res.status(500).json(err);
     }
   },
@@ -116,8 +116,8 @@ const ThoughtController = {
         { runValidators: true, new: true }
       );
 
-      thought ? res.json(thought) : res.status(404).json({ message: notFound });
-    } catch (e) {
+      thought ? res.json(thought) : res.status(404).json({ message: "notFound" });
+    } catch (err) {
       res.status(500).json(err);
     }
   },
