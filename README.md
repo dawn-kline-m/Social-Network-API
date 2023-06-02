@@ -1,36 +1,34 @@
-# 18 NoSQL: Social Network API
+Social Network API, NoSQL
 
-## Your Task
+## Table of Contents
+- [Description](#description)
+- [User Specifications](#user-specifications)
+- [Functionality](#functionality)
+- [Mock-Up](#mock-up)
+- [Screenshots](#screenshots)
+- [Deliverables](#deliverables)
 
-MongoDB is a popular choice for many social networks due to its speed with large amounts of data and flexibility with unstructured data. Over the last part of this course, you’ll use several of the technologies that social networking platforms use in their full-stack applications. Because the foundation of these applications is data, it’s important that you understand how to build and structure the API first.
+## Description
 
-Your Challenge is to build an API for a social network web application where users can share their thoughts, react to friends’ thoughts, and create a friend list. You’ll use Express.js for routing, a MongoDB database, and the Mongoose ODM. In addition to using the [Express.js](https://www.npmjs.com/package/express) and [Mongoose](https://www.npmjs.com/package/mongoose) packages, you may also optionally use a JavaScript date library of your choice or the native JavaScript `Date` object to format timestamps.
+This challenge is to build an API for a social network web application where users can share their thoughts, react to friends’ thoughts, and create a friend list. Express.js will be used for routing, a MongoDB database, and the Mongoose ODM. 
 
-No seed data is provided, so you’ll need to create your own data using Insomnia after you’ve created your API.
+## User Specifications
 
-Because this application won’t be deployed, you’ll also need to create a walkthrough video that demonstrates its functionality and all of the following acceptance criteria being met. You’ll need to submit a link to the video and add it to the README of your project.
-
-## User Story
-
-```md
 AS A social media startup
 I WANT an API for my social network that uses a NoSQL database
 SO THAT my website can handle large amounts of unstructured data
-```
 
-## Acceptance Criteria
+## Functionality
 
-```md
-GIVEN a social network API
-WHEN I enter the command to invoke the application
-THEN my server is started and the Mongoose models are synced to the MongoDB database
-WHEN I open API GET routes in Insomnia for users and thoughts
-THEN the data for each of these routes is displayed in a formatted JSON
-WHEN I test API POST, PUT, and DELETE routes in Insomnia
-THEN I am able to successfully create, update, and delete users and thoughts in my database
-WHEN I test API POST and DELETE routes in Insomnia
-THEN I am able to successfully create and delete reactions to thoughts and add and remove friends to a user’s friend list
-```
+GIVEN a social network API:
+
+When the user enters the command to invoke the application, the server is started and the Mongoose models are synced to the MongoDB database.
+
+When the user opens the API GET routes in Insomnia for users and thoughts, the data for each of these routes is displayed in a formatted JSON.
+
+When the user tests the API POST, PUT, and DELETE routes in Insomnia, the user is able to successfully create, update, and delete users and thoughts in the database.
+
+When the user tests API POST and DELETE routes in Insomnia, the user is able to successfully create and delete reactions to thoughts and add and remove friends to a user’s friend list.
 
 ## Mock Up
 
@@ -202,25 +200,8 @@ This will not be a model, but rather will be used as the `reaction` field's subd
 
 * `DELETE` to pull and remove a reaction by the reaction's `reactionId` value
 
-## Grading Requirements
 
-> **Note**: If a Challenge assignment submission is marked as “0”, it is considered incomplete and will not count towards your graduation requirements. Examples of incomplete submissions include the following:
->
-> * A repository that has no code
->
-> * A repository that includes a unique name but nothing else
->
-> * A repository that includes only a README file but nothing else
->
-> * A repository that only includes starter code
-
-This Challenge is graded based on the following criteria:
-
-### Deliverables: 10%
-
-* Your GitHub repository containing your application code.
-
-### Walkthrough Video: 37%
+### Walkthrough Video:
 
 * A walkthrough video that demonstrates the functionality of the social media API must be submitted, and a link to the video should be included in your README file.
 
@@ -238,56 +219,38 @@ This Challenge is graded based on the following criteria:
 
   * Walkthrough video must demonstrate POST and DELETE routes for reactions to thoughts being tested in Insomnia.
 
-### Technical Acceptance Criteria: 40%
+Endpoints:
+GET /api/users - get all users
 
-* Satisfies all of the preceding acceptance criteria plus the following:
+GET /api/users/:userId - get a single user by ID
 
-  * Uses the [Mongoose package](https://www.npmjs.com/package/mongoose) to connect to a MongoDB database.
+POST /api/users - create a new user
 
-  * Includes User and Thought models outlined in the Challenge instructions.
+PUT /api/users/:userId - update a user by ID
 
-  * Includes schema settings for User and Thought models as outlined in the Challenge instructions.
+DELETE /api/users/:userId - delete a user by ID
 
-  * Includes Reactions as the `reaction` field's subdocument schema in the Thought model.
+GET /api/thought - get all thought
 
-  * Uses functionality to format queried timestamps properly.
+GET /api/thought/:thoughtId - get a single thought by ID
 
-### Repository Quality: 13%
+POST /api/thought - create a new thought
 
-* Repository has a unique name.
+PUT /api/thought/:thoughtId - update a thought by ID
 
-* Repository follows best practices for file structure and naming conventions.
+DELETE /api/thought/:thoughtId - delete a thought by ID
 
-* Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
+POST /api/thought/:thoughtId/reactions - add a reaction to a thought
 
-* Repository contains multiple descriptive commit messages.
+DELETE /api/thought/:thoughtId/reactions/:reactionId - remove a reaction from a thought
 
-* Repository contains a high-quality README with description and a link to a walkthrough video.
+POST /api/users/:userId/friends/:friendId - add a friend to a user's friend list
 
-### Bonus: +10 Points
+DELETE /api/users/:userId/friends/:friendId - remove a friend from a user's friend list
 
-* Application deletes a user's associated thoughts when the user is deleted.
-
-## Review
-
-You are required to submit BOTH of the following for review:
+## Deliverables
 
 * A walkthrough video demonstrating the functionality of the application and all of the acceptance criteria being met.
 
-* The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
+* The URL of the GitHub repository:  https://github.com/dawn-kline-m/Social-Network-API
 
-Endpoints:
-GET /api/users - get all users
-GET /api/users/:userId - get a single user by ID
-POST /api/users - create a new user
-PUT /api/users/:userId - update a user by ID
-DELETE /api/users/:userId - delete a user by ID
-GET /api/thought - get all thought
-GET /api/thought/:thoughtId - get a single thought by ID
-POST /api/thought - create a new thought
-PUT /api/thought/:thoughtId - update a thought by ID
-DELETE /api/thought/:thoughtId - delete a thought by ID
-POST /api/thought/:thoughtId/reactions - add a reaction to a thought
-DELETE /api/thought/:thoughtId/reactions/:reactionId - remove a reaction from a thought
-POST /api/users/:userId/friends/:friendId - add a friend to a user's friend list
-DELETE /api/users/:userId/friends/:friendId - remove a friend from a user's friend list

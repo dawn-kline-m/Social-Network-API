@@ -116,7 +116,7 @@ const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 const getRandomName = () =>
   `${getRandomArrItem(names)} ${getRandomArrItem(names)}`;
 
-// Function to generate random applications that we can add to the database. Includes application tags.
+// Function to generate random applications that we can add to the database. I
 const getRandomApplications = (int) => {
   let results = [];
   for (let i = 0; i < int; i++) {

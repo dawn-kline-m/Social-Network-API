@@ -50,7 +50,7 @@ const ThoughtController = {
   // Update thought by ID
   async updateThoughtByID(req, res) {
     try {
-      const thought = await Thought.findByIDAndUpdate(
+      const thought = await Thought.findByIdAndUpdate(
         req.params.thoughtId,
         { $set: req.body },
         { runValidators: true, new: true }
@@ -69,7 +69,7 @@ const ThoughtController = {
   // Deletes a thought
   async deleteThought(req, res) {
     try {
-      const thought = await Thought.findByIDAndDelete(req.params.thoughtId);
+      const thought = await Thought.findByIdAndDelete(req.params.thoughtId);
 
       if (!thought) {
         return res.status(404).json({ message: 'No thought with this id!' });
